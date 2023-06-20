@@ -26,3 +26,18 @@ jobs:
           docker build -t spring-cicd . 
           docker tag spring-cicd seyun/spring-cicd:${GITHUB_SHA::7}
           docker push seyun/spring-cicd:${GITHUB_SHA::7}
+      #위 내용은 지속적 통합을 위한 스크립트가 될 것입니다.
+      #(이미 작성된 스크립트들의 맨 아래)
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: 3.34.202.138
+          username: ubuntu
+          key: ${{ secrets.KEY }}
+          envs: GITHUB_SHA
+          script: |
+            docker pull seyun/spring-cicd:${GITHUB_SHA::7}
+            docker tag seyun/spring-cicd:${GITHUB_SHA::7} spring-cicd
+            docker stop server
+            docker rm -f server
+            docker run -d --name server -p 8080:8080 spring-cicd
