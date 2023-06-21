@@ -32,7 +32,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ec2-3-34-202-138.ap-northeast-2.compute.amazonaws.com
-          username: ubuntu
+          username: ssm-user
           key: ${{ secrets.KEY }}
           envs: GITHUB_SHA
           script: |
