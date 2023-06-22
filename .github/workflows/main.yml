@@ -53,7 +53,7 @@ jobs:
 
       - name: Test
         run: cd ~ \
-            mkdir seyun-test
+            touch testtesttest
 
       - name: Deploy to Server
         run: |
