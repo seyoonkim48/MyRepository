@@ -28,16 +28,36 @@ jobs:
           docker push seyun/spring-cicd:${GITHUB_SHA::7}
       #위 내용은 지속적 통합을 위한 스크립트가 될 것입니다.
       #(이미 작성된 스크립트들의 맨 아래)
-      - name: Deploy
-        uses: appleboy/ssh-action@master
+#      - name: Deploy
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ec2-3-34-202-138.ap-northeast-2.compute.amazonaws.com
+#          username: ssm-user
+#          key: ${{ secrets.KEY }}
+#          envs: GITHUB_SHA
+#          script: |
+#            docker pull seyun/spring-cicd:${GITHUB_SHA::7}
+#            docker tag seyun/spring-cicd:${GITHUB_SHA::7} spring-cicd
+#            docker stop server
+#            docker rm -f server
+#            docker run -d --name server -p 8080:8080 spring-cicd
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          host: ec2-3-34-202-138.ap-northeast-2.compute.amazonaws.com
-          username: ssm-user
-          key: ${{ secrets.KEY }}
-          envs: GITHUB_SHA
-          script: |
-            docker pull seyun/spring-cicd:${GITHUB_SHA::7}
-            docker tag seyun/spring-cicd:${GITHUB_SHA::7} spring-cicd
-            docker stop server
-            docker rm -f server
-            docker run -d --name server -p 8080:8080 spring-cicd
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Start Session Manager session
+        run: aws ssm start-session --target i-03fcf92a9ea84738c
+
+      - name: Deploy to Server
+        run: |
+          docker pull seyun/spring-cicd:${GITHUB_SHA::7}
+          docker tag seyun/spring-cicd:${GITHUB_SHA::7} spring-cicd
+          docker stop server
+          docker rm -f server
+          docker run -d --name server -p 8080:8080 spring-cicd
+
+      - name: End Session Manager session
+        run: aws ssm terminate-session --session-id ${{ github.job_id }}
