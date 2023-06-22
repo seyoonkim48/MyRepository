@@ -53,10 +53,12 @@ jobs:
 
       - name: Deploy to Server
         run: |
+          if docker ps -a --format '{{.Names}}' | grep -q '^server$'; then
+            docker stop server
+            docker rm server
+          fi
           docker pull seyun/spring-cicd:${GITHUB_SHA::7}
           docker tag seyun/spring-cicd:${GITHUB_SHA::7} spring-cicd
-          docker stop server
-          docker rm -f server
           docker run -d --name server -p 8080:8080 spring-cicd
 
       - name: End Session Manager session
