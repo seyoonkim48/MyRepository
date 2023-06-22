@@ -47,13 +47,21 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
+      - name: Test
+        run: |
+          cd ~
+          pwd
+          whoami
+          touch testtesttest
 
       - name: Start Session Manager session
         run: aws ssm start-session --target i-03fcf92a9ea84738c
 
-      - name: Test
+      - name: Test2
         run: |
           cd ~
+          pwd
+          whoami
           touch testtesttest
 
       - name: Deploy to Server
