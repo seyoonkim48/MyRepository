@@ -74,8 +74,8 @@ jobs:
               '  sudo docker stop server',
               '  sudo docker rm server',
               'fi',
-              'sudo docker pull seyun/spring-cicd:${{ github.sha }}',
-              'sudo docker tag seyun/spring-cicd:${{ github.sha }} spring-cicd',
+              'sudo docker pull seyun/spring-cicd:${GITHUB_SHA::7}',
+              'sudo docker tag seyun/spring-cicd:${GITHUB_SHA::7} spring-cicd',
               'sudo docker run -d --name server -p 8080:8080 spring-cicd'
             ]" \
             --output text
