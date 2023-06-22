@@ -60,6 +60,6 @@ jobs:
           docker pull seyun/spring-cicd:${GITHUB_SHA::7}
           docker tag seyun/spring-cicd:${GITHUB_SHA::7} spring-cicd
           docker run -d --name server -p 8080:8080 spring-cicd
-
-      - name: End Session Manager session
-        run: aws ssm terminate-session --session-id ${{ github.job_id }}
+#
+#      - name: End Session Manager session
+#        run: aws ssm terminate-session --session-id ${{ github.job_id }}
