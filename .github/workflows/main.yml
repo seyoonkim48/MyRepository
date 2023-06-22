@@ -70,14 +70,7 @@ jobs:
             --instance-ids i-03fcf92a9ea84738c \
             --document-name "AWS-RunShellScript" \
             --parameters "commands=[
-              'if sudo docker ps -a --format \\'{{.Names}}\\' | grep -q \'^server$\\'; then',
-              '  sudo docker stop server',
-              '  sudo docker rm server',
-              'fi',
-              'sudo docker pull seyun/spring-cicd:${GITHUB_SHA::7}',
-              'sudo docker tag seyun/spring-cicd:${GITHUB_SHA::7} spring-cicd',
-              'sudo docker run -d --name server -p 8080:8080 spring-cicd'
-            ]" \
+              'touch /home/ubuntu/testplz']" \
             --output text
 #
 #      - name: End Session Manager session
