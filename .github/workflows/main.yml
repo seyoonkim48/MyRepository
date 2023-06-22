@@ -24,7 +24,7 @@ jobs:
         run: |
           docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
           docker build -t spring-cicd . 
-          docker tag spring-cicd seyun/spring-cicd:${GITHUB_SHA::7}
+          docker tag spring-cicd seyun/spring-cicd:${GITHUB_SHA::7} seyun/spring-cicd:latest
           docker push seyun/spring-cicd:${GITHUB_SHA::7}
 
       - name: Configure AWS credentials
@@ -51,8 +51,8 @@ jobs:
               '  sudo docker stop server',
               '  sudo docker rm server',
               'fi',
-              'sudo docker pull seyun/spring-cicd',
-              'sudo docker tag seyun/spring-cicd spring-cicd',
+              'sudo docker pull seyun/spring-cicd:latest',
+              'sudo docker tag seyun/spring-cicd:latest spring-cicd',
               'sudo docker run -d --name server -p 8080:8080 spring-cicd'
             ]" \
             --output text
