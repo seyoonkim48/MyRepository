@@ -53,13 +53,13 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          if docker ps -a --format '{{.Names}}' | grep -q '^server$'; then
-            docker stop server
-            docker rm server
+          if sudo docker ps -a --format '{{.Names}}' | grep -q '^server$'; then
+            sudo docker stop server
+            sudo docker rm server
           fi
-          docker pull seyun/spring-cicd:${GITHUB_SHA::7}
-          docker tag seyun/spring-cicd:${GITHUB_SHA::7} spring-cicd
-          docker run -d --name server -p 8080:8080 spring-cicd
+          sudo docker pull seyun/spring-cicd:${GITHUB_SHA::7}
+          sudo docker tag seyun/spring-cicd:${GITHUB_SHA::7} spring-cicd
+          sudo docker run -d --name server -p 8080:8080 spring-cicd
 #
 #      - name: End Session Manager session
 #        run: aws ssm terminate-session --session-id ${{ github.job_id }}
