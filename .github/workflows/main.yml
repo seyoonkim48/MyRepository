@@ -51,6 +51,10 @@ jobs:
       - name: Start Session Manager session
         run: aws ssm start-session --target i-03fcf92a9ea84738c
 
+      - name: Test
+        run: cd ~ \
+            mkdir seyun-test
+
       - name: Deploy to Server
         run: |
           if sudo docker ps -a --format '{{.Names}}' | grep -q '^server$'; then
