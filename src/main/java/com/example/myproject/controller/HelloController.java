@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     @GetMapping
     public String hello() {
-        return "Hello World!! 오예! 도대체 언제부터 된건데...";
+        return "Hello World!! 이건 student가 발급한 access key";
     }
 }
